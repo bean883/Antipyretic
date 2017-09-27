@@ -85,7 +85,7 @@ public final class Antipyretic {
     public static boolean loadUrl(String url, Context context) {
         if (!TextUtils.isEmpty(url) && context != null) {
             Uri uri = Uri.parse(url);
-            return load(context, uri, uri, null, null, null, 0, null, 0);
+            return load(context, uri, uri, null, null, null, 0, null, null);
         }
         Log.e(TAG, "没有找到跳转页面");
         return false;
@@ -205,6 +205,7 @@ public final class Antipyretic {
                 cn.bingod.antipyretic.Uri routingUri = method.getAnnotation(cn.bingod.antipyretic.Uri.class);
                 Transition routingTransition = method.getAnnotation(Transition.class);
                 ForResult routingForResult = method.getAnnotation(ForResult.class);
+                Flags flag = method.getAnnotation(Flags.class);
 
                 Uri uri = Uri.parse(routingUri.value());
                 Uri originUri = uri = Uri.parse(wrapUri(uri));
@@ -212,7 +213,8 @@ public final class Antipyretic {
 
                 Map<String, Object> params = new ArrayMap<>();
                 Map<String, Object> uriPathParams = new ArrayMap<>();
-                int flags = 0;
+                int[] flags = null;
+                if (flag != null) flags = flag.value();
                 for (int i = 0; i < parameterAnnotations.length; i++) {
                     Annotation[] annotations = parameterAnnotations[i];
                     if (annotations != null && annotations.length > 0) {
@@ -232,8 +234,6 @@ public final class Antipyretic {
                             } else if (annotation instanceof Extra) {
                                 Extra rb = (Extra) annotation;
                                 params.put(rb.value(), args[i]);
-                            } else if (annotation instanceof Flags) {
-                                flags = ((Flags) annotation).flags();
                             }
                         }
                     }
@@ -249,9 +249,13 @@ public final class Antipyretic {
         });
     }
 
-    private static boolean load(Context context, Uri uri, Uri originUri, Map<String, Object> uriPathParams, Map<String, Object> params, Transition routingTransition, int requestCode, Bundle options, int flags) {
+    private static boolean load(Context context, Uri uri, Uri originUri, Map<String, Object> uriPathParams, Map<String, Object> params, Transition routingTransition, int requestCode, Bundle options, int[] flags) {
         Intent intent = new Intent();
-        if(flags != 0) intent.addFlags(flags);
+        if(flags != null && flags.length > 0) {
+            for (int flag : flags) {
+                if (flag != 0) intent.addFlags(flag);
+            }
+        }
         Bundle bundle = params2Bundle(params);
         params2Intent(intent, uriPathParams);
 

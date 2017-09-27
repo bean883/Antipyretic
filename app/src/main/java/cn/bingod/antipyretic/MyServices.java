@@ -1,5 +1,7 @@
 package cn.bingod.antipyretic;
 
+import android.content.Intent;
+
 import java.util.List;
 
 /**
@@ -62,8 +64,10 @@ public interface MyServices {
     void openTestWithAnim(@Query("p") String id, @Extra("e") String extra, @Extra("testObj") TestObj obj);
 
     @Uri("/web")
+    @Flags({Intent.FLAG_ACTIVITY_CLEAR_TOP, Intent.FLAG_ACTIVITY_NEW_TASK})
     boolean toWeb(@Query("url") String url);
 
     @Uri("/blank/{id}")
+    @Flags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     BlankFragment toBlank(@Path("id") String a, @Query("param") String b, @Extra("extra") TestObj obj);
 }
