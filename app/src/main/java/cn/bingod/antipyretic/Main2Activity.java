@@ -1,5 +1,6 @@
 package cn.bingod.antipyretic;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 
 import cn.bingod.antipyretic.library.Antipyretic;
 
-@Table(value = "/main2")
+//@Table(value = "/main2")
+@Table(value = {"/main2","/test/main2"})
 public class Main2Activity extends AppCompatActivity {
 
     @Param

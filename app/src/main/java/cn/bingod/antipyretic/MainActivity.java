@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void forResult(View view) {
-        Antipyretic.get().create(MyServices.class, this).openTestForResult(new TestObj("666"));
+        Antipyretic.get().create(MyServices.class, this).openTestForResult(new TestObj("666"),110);
     }
 
     public void bundle(View view) {

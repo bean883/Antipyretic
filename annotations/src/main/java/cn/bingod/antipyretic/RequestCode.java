@@ -6,13 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author bin
- * @since 2017/5/12
+ * @author songxi
+ * @since 2017/10/27
  */
-@Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
-public @interface Table {
-    String[] value();
 
-    String packageName() default "";
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestCode {
+    int value() default 0;
 }
