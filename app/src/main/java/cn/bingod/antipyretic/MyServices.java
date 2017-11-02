@@ -54,7 +54,7 @@ public interface MyServices {
 
     @Uri("/main2")
     @ForResult(requestCode = 119)
-    void openTestForResult(@Extra("testObj") TestObj obj);
+    void openTestForResult(@Extra("testObj") TestObj obj, @RequestCode() int value);
 
     @Uri("com.mogoroom.antipyretics.action.main2/{id}")
     boolean main4(@Query("p") String p, @Extra("testObj") TestObj obj);

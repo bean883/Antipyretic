@@ -80,7 +80,9 @@ public class AnnotationProcessor extends AbstractProcessor {
                 ClassName className = ClassName.get(tableClass.packageName(), "RoutingMap");
                 tableInfo.packageName = className.packageName();
                 tableInfo.className = className;
-                tableInfo.addUriTable(new UriTable(rt.value(), rt.packageName(), tableClass.reflectionName(), isActivity));
+                String[] path = rt.value();
+                for (int i = 0; i<path.length ; i ++)
+                    tableInfo.addUriTable(new UriTable(path[i], rt.packageName(), tableClass.reflectionName(), isActivity));
             }
         }
     }

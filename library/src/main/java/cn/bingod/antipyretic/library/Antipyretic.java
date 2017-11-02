@@ -34,6 +34,7 @@ import cn.bingod.antipyretic.Flags;
 import cn.bingod.antipyretic.ForResult;
 import cn.bingod.antipyretic.Path;
 import cn.bingod.antipyretic.Query;
+import cn.bingod.antipyretic.RequestCode;
 import cn.bingod.antipyretic.Transition;
 
 /**
@@ -213,6 +214,7 @@ public final class Antipyretic {
 
                 Map<String, Object> params = new ArrayMap<>();
                 Map<String, Object> uriPathParams = new ArrayMap<>();
+                int mRequestCode = 0;
                 int[] flags = null;
                 if (flag != null) flags = flag.value();
                 for (int i = 0; i < parameterAnnotations.length; i++) {
@@ -234,6 +236,9 @@ public final class Antipyretic {
                             } else if (annotation instanceof Extra) {
                                 Extra rb = (Extra) annotation;
                                 params.put(rb.value(), args[i]);
+                            } else if (annotation instanceof RequestCode) {
+                                RequestCode rc = (RequestCode) annotation;
+                                mRequestCode = (int) args[i];
                             }
                         }
                     }
@@ -244,7 +249,12 @@ public final class Antipyretic {
                     }
                 }
                 Log.d(TAG, "invoke: " + uri.toString());
-                return load(context, uri, originUri, uriPathParams, params, routingTransition, routingForResult == null ? 0 : routingForResult.requestCode(), options, flags);
+
+                if (mRequestCode != 0)
+                    return load(context, uri, originUri, uriPathParams, params, routingTransition, mRequestCode, options, flags);
+                else
+                    return load(context, uri, originUri, uriPathParams, params, routingTransition, routingForResult == null ? 0 : routingForResult.requestCode(), options, flags);
+
             }
         });
     }
