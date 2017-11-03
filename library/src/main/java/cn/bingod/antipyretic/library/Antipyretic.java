@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,17 @@ public final class Antipyretic {
         return this;
     }
 
+    public Antipyretic add (Map<String, String> map) {
+        if (instance.map == null)
+            instance.map = new HashMap<>();
+        instance.map.putAll(map);
+        return this;
+    }
+
     public void init (Map<String, String> map) {
-        instance.map = map;
+        if (instance.map == null)
+            instance.map = new HashMap<>();
+        instance.map.putAll(map);
     }
 
     public Antipyretic addInterceptor(Interceptor interceptor) {

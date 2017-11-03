@@ -57,10 +57,18 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private void createTable(RoundEnvironment roundEnv) {
         TableInfo tableInfo = new TableInfo();
+        String packageName = getClass().getPackage().getName();
+        String suffix = null;
+        for (Element element : roundEnv.getElementsAnnotatedWith(Modules.class)) {
+            Modules modules = element.getAnnotation(Modules.class);
+            packageName = modules.value();
+            String[] packageArrays = packageName.split("\\.");
+            if (packageArrays.length > 0)
+                suffix = packageArrays[packageArrays.length - 1];
+        }
         for (Element element : roundEnv.getElementsAnnotatedWith(Table.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
-            Log.print("---" + element.toString());
-            parseTables(element, tableInfo);
+            parseTables(element, tableInfo, packageName, suffix);
         }
         JavaFile javaFile = tableInfo.brewJava();
         try {
@@ -70,19 +78,20 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseTables(Element element, TableInfo tableInfo) {
+    private void parseTables(Element element, TableInfo tableInfo, String packageName, String suffix) {
         if (tableInfo != null) {
             TypeName targetType = TypeName.get(element.asType());
             if (targetType instanceof ClassName) {
                 boolean isActivity = typeUtils.isActivity(element.asType());
                 ClassName tableClass = (ClassName) targetType;
                 Table rt = element.getAnnotation(Table.class);
-                ClassName className = ClassName.get(tableClass.packageName(), "RoutingMap");
+                ClassName className = ClassName.get(packageName, "RoutingMap" + (suffix == null ? "" : "_"+suffix));
                 tableInfo.packageName = className.packageName();
                 tableInfo.className = className;
                 String[] path = rt.value();
-                for (int i = 0; i<path.length ; i ++)
-                    tableInfo.addUriTable(new UriTable(path[i], rt.packageName(), tableClass.reflectionName(), isActivity));
+                for (String aPath : path){
+                    tableInfo.addUriTable(new UriTable(aPath, tableClass.reflectionName(), isActivity));
+                }
             }
         }
     }

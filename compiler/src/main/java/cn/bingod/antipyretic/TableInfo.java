@@ -62,11 +62,6 @@ final class TableInfo {
         CodeBlock.Builder builder = CodeBlock.builder();
         for (UriTable uriTable : uriTables) {
             if (uriTable.isActivity) {
-                /*String pn = uriTable.packageName;
-                if (pn == null || "".equals(pn)) {
-                    pn = packageName;
-                }
-                builder.add("map.put($S, new ComponentName($S, $S));", uriTable.uri, pn, uriTable.className).add("\n");*/
                 builder.add("map.put($S, $S);", uriTable.uri, uriTable.className).add("\n");
             } else {
 

@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author bin
- * @since 2017/5/12
+ * @since 2017/11/3
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface Table {
-    String[] value();
+public @interface Modules {
+    String value();
 }

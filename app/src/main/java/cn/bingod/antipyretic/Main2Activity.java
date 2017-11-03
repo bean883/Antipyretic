@@ -1,6 +1,5 @@
 package cn.bingod.antipyretic;
 
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;

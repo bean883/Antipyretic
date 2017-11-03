@@ -3,6 +3,7 @@
 
 ### 使用(支持activity跳转和fragment数据绑定，fragment需手动跳转)
 #### 初始化(在Application中)
+只有一个Module的情况，只需初始化一个路由表
 ```
 Antipyretic.Config cfg = new Antipyretic.Config();
 //cfg.intentAction = BuildConfig.APPLICATION_ID + ".intent.action";(可以配置action隐式跳转)
@@ -10,7 +11,10 @@ cfg.host = "xxx";
 cfg.packageName = getPackageName();
 Antipyretic.get().config(cfg).init(RoutingMap.get());
 ```
-
+如果是多Module，可以调用add添加不同的路由表（RoutingMap_moduleName中的后缀替换成自己的Module名）
+```
+Antipyretic.get().config(cfg).add(RoutingMap_moduleName.get());
+```
 ##### 1. 网页跳转原生页面
 
 `
